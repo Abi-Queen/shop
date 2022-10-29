@@ -38,7 +38,7 @@ router.get('/:id', (req, res) => {
       'category_name'
       //do we need 'created_at'?
     ],
-    //not really sure what models or attributes to include
+    //not sure what attributes to include from this model
     include: [
       {
         model: Product,
@@ -64,7 +64,7 @@ router.post('/', (req, res) => {
   Category.create({
     category_name: req.body.category_name,
   })
-  .then(dbCategoryData => res.json(dbPostData))
+  .then(dbCategoryData => res.json(dbCategoryData))
   .catch(err => {
     console.log(err)
     res.status(500).json(err)
@@ -75,6 +75,7 @@ router.post('/', (req, res) => {
 router.put('/:id', (req, res) => {
   Category.update(
     {
+      //should this be res.body.name, or as is, 'category_name'?
       category_name: req.body.category_name
     },
     {

@@ -1,21 +1,82 @@
-const router = require('express').Router();
-const { Product, Category, Tag, ProductTag } = require('../../models');
+const router = require('express').Router()
+const sequelize = require('../../config/connection')
+const { Product, Category, Tag, ProductTag } = require('../../models')
 
 // The `/api/products` endpoint
 
-// get all products
+//GET: find all products (include associated category and tag data)
 router.get('/', (req, res) => {
-  // find all products
-  // be sure to include its associated Category and Tag data
-});
+  Product.findAll({
+    attributes: [
+      'id',
+      'product_name',
+      'price',
+      'stock',
+      'category_id'
+    ],
+    // not sure what attributes to include, include through??
+    include: [
+      {
+        model: Category,
+        attributes: ['id']
+      },
+      { 
+        model: Tag,
+        attributes: ['id']
+      },
+      {
+        model: ProductTag,
+        attributes: ['product_id']
+      }
+    ]
+  })
+    .then(dbProductData => res.json(dbProductData))
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err)
+})
 
-// get one product
+
+//GET: find product by id
 router.get('/:id', (req, res) => {
-  // find a single product by its `id`
-  // be sure to include its associated Category and Tag data
-});
+  Product.findOne({
+    attributes: [
+      'id',
+      'product_name',
+      'price',
+      'stock',
+      'category_id'
+    ],
+    // not sure what attributes to include, include through??
+    include: [
+      {
+        model: Category,
+        attributes: ['id']
+      },
+      { 
+        model: Tag,
+        attributes: ['id']
+      },
+      {
+        model: ProductTag,
+        attributes: ['product_id']
+      }
+    ]
+  })
+  .then(dbProductData => {
+    if (!dbProductData) {
+      res.status(404).json({ message: 'No product found with this id' });
+      return;
+    }
+    res.json(dbProductData);
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500).json(err);
+  })
+})
 
-// create new product
+//POST: create new product
 router.post('/', (req, res) => {
   /* req.body should look like this...
     {
