@@ -10,13 +10,15 @@ router.get('/', (req, res) => {
     attributes: [
       'id',
       'tag_name'
-      //do we need 'created_at'?
     ],
-    //no idea how to include product data, through producttag?
     include: [
       {
         model: Product,
-        attributes: ['id']
+        attributes: ['id', 'product_name', 'price', 'stock', 'category_id']
+      },
+      {
+        model: ProductTag,
+        attributes: ['id', 'tag_name']
       }
     ]
   })
@@ -36,13 +38,15 @@ router.get('/:id', (req, res) => {
     attributes: [
       'id',
       'tag_name'
-      //do we need 'created_at'?
     ],
-    //no idea how to include product data, through producttag?
     include: [
       {
         model: Product,
-        attributes: ['id']
+        attributes: ['id', 'product_name', 'price', 'stock', 'category_id']
+      },
+      {
+        model: ProductTag,
+        attributes: ['id', 'tag_name']
       }
     ]
   })

@@ -15,7 +15,7 @@ router.get('/', (req, res) => {
     include: [
       {
         model: Product,
-        attributes: ['id']
+        attributes: ['id', 'product_name', 'price', 'stock', 'category_id']
       }
     ]
   })
@@ -36,13 +36,11 @@ router.get('/:id', (req, res) => {
     attributes: [
       'id',
       'category_name'
-      //do we need 'created_at'?
     ],
-    //not sure what attributes to include from this model
     include: [
       {
         model: Product,
-        attributes: ['id']
+        attributes: ['id', 'product_name', 'price', 'stock', 'category_id']
       }
     ]
   })

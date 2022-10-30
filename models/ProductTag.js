@@ -1,7 +1,6 @@
-// imports: sequelize library, db connection 
-const { INTEGER } = require('sequelize');
-const { Model, DataTypes } = require('sequelize');
-const sequelize = require('../config/connection');
+const { INTEGER } = require('sequelize')
+const { Model, DataTypes } = require('sequelize')
+const sequelize = require('../config/connection')
 
 //create ProductTag model
 class ProductTag extends Model {}
