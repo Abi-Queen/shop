@@ -16,7 +16,7 @@ Category.init(
     },
     catetory_name: {
       type: DataTypes.STRING,
-      allowNull: false
+      // allowNull: false
     }
   },
   {
