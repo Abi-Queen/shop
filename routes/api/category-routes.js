@@ -1,21 +1,16 @@
 const router = require('express').Router()
 const sequelize = require('../../config/connection')
-const { Category, Product } = require('../../models')
-
-// The `/api/categories` endpoint
+const { Category, Product, ProductTag } = require('../../models')
 
 //GET: find all categories
 router.get('/', (req, res) => {
   Category.findAll({
-    attributes: [
-      'id',
-      'category_name'
-      //do we need 'created_at'?
-    ],
+    attributes: ['id', 'category_name'],
     include: [
       {
         model: Product,
-        attributes: ['id', 'product_name', 'price', 'stock', 'category_id']
+        attributes: ['id', 'product_name', 'price', 'stock', 'category_id'],
+        through: ProductTag
       }
     ]
   })
@@ -33,14 +28,12 @@ router.get('/:id', (req, res) => {
     where: {
       id: req.params.id
     },
-    attributes: [
-      'id',
-      'category_name'
-    ],
+    attributes: ['id', 'category_name'],
     include: [
       {
         model: Product,
-        attributes: ['id', 'product_name', 'price', 'stock', 'category_id']
+        attributes: ['id', 'product_name', 'price', 'stock', 'category_id'],
+        through: ProductTag
       }
     ]
   })

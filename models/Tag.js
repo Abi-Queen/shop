@@ -16,7 +16,6 @@ Tag.init(
       tag_name: {
         type: DataTypes.STRING
       }
-      //include product data?
   },
   {
     sequelize,

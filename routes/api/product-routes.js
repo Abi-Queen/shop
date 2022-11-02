@@ -7,19 +7,13 @@ const { Product, Category, Tag, ProductTag } = require('../../models')
 //GET: find all products (include associated category and tag data)
 router.get('/', (req, res) => {
   Product.findAll({
-    attributes: [
-      'id',
-      'product_name',
-      'price',
-      'stock',
-      'category_id'
-    ],
+    attributes: ['id', 'product_name', 'price', 'stock', 'category_id'],
     include: [
       {
         Category,
         model: Tag,
         through: ProductTag
-      }],
+      }]
   })
     .then(dbProductData => res.json(dbProductData))
     .catch(err => {
@@ -32,28 +26,13 @@ router.get('/', (req, res) => {
 //GET: find product by id
 router.get('/:id', (req, res) => {
   Product.findOne({
-    attributes: [
-      'id',
-      'product_name',
-      'price',
-      'stock',
-      'category_id'
-    ],
-    // not sure what attributes to include, include through??
+    attributes: ['id', 'product_name', 'price', 'stock', 'category_id'],
     include: [
       {
-        model: Category,
-        attributes: ['id', 'category_name']
-      },
-      { 
+        Category,
         model: Tag,
-        attributes: ['id', 'tag_name']
-      },
-      {
-        model: ProductTag,
-        attributes: ['id', 'product_id', 'tag_id']
-      }
-    ]
+        through: ProductTag
+      }]
   })
   .then(dbProductData => {
     if (!dbProductData) {
@@ -78,10 +57,16 @@ router.post('/', (req, res) => {
       tagIds: [1, 2, 3, 4]
     }
   */
-  Product.create(req.body)
+  Product.create({
+    product_name: req.body.product_name,
+    price: req.body.price,
+    stock: req.body.stock,
+    tagIds: req.body.tagIds
+  })
     .then((product) => {
       // if there's product tags, we need to create pairings to bulk create in the ProductTag model
-      if (req.body.tagIds.length) {
+      if (req.body.tagIds) {
+        //removed .length from productTagIdArr, causing errors; still causing 'not a function' errors
         const productTagIdArr = req.body.tagIds.map((tag_id) => {
           return {
             product_id: product.id,
