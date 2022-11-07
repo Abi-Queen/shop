@@ -1,18 +1,17 @@
 const router = require('express').Router()
-const sequelize = require('../../config/connection')
 const { Category, Product, ProductTag } = require('../../models')
 
 //GET: find all categories
 router.get('/', (req, res) => {
   Category.findAll({
-    attributes: ['id', 'category_name'],
-    include: [
-      {
-        model: Product,
-        attributes: ['id', 'product_name', 'price', 'stock', 'category_id'],
-        through: ProductTag
-      }
-    ]
+    // attributes: ['id', 'category_name'],
+    include: [Product]
+    //   {
+    //     model: Product,
+    //     // attributes: ['id', 'product_name', 'price', 'stock', 'category_id']
+    //     // through: ProductTag
+    //   }
+    // ]
   })
     .then(dbCategoryData => res.json(dbCategoryData))
     .catch(err => {
@@ -29,13 +28,13 @@ router.get('/:id', (req, res) => {
       id: req.params.id
     },
     attributes: ['id', 'category_name'],
-    include: [
-      {
-        model: Product,
-        attributes: ['id', 'product_name', 'price', 'stock', 'category_id'],
-        through: ProductTag
-      }
-    ]
+    include: [Product]
+      // {
+      //   model: Product,
+      //   attributes: ['id', 'product_name', 'price', 'stock', 'category_id'],
+      //   through: ProductTag
+      // }
+    // ]
   })
     .then(dbCategoryData => {
       if (!dbCategoryData) {
@@ -53,7 +52,7 @@ router.get('/:id', (req, res) => {
 //POST: create a new category
 router.post('/', (req, res) => {
   Category.create({
-    category_name: req.body.category_name
+    category_name: req.body.cagegory_name
   })
   .then(dbCategoryData => res.json(dbCategoryData))
   .catch(err => {
