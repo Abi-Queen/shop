@@ -25,12 +25,12 @@ router.get('/', (req, res) => {
 router.get('/:id', (req, res) => {
   Product.findOne({
     attributes: ['id', 'product_name', 'price', 'stock', 'category_id'],
-    include: [Category]
-      // {
-      //   Category,
-      //   model: Tag,
-      //   through: ProductTag
-      // }]
+    include: [
+      {
+        Category,
+        model: Tag,
+        through: ProductTag
+      }]
   })
   .then(dbProductData => {
     if (!dbProductData) {
